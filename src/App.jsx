@@ -6,6 +6,8 @@ import 'aos/dist/aos.css';
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [cursorVariant, setCursorVariant] = useState('default');
 
   useEffect(() => {
     // Initialize AOS animations
@@ -20,8 +22,41 @@ function App() {
       setIsScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Custom Cursor movement
+    const mouseMove = (e) => {
+      setCursorPos({
+        x: e.clientX,
+        y: e.clientY
+      });
+    };
+
+        const mouseEnterLink = () => setCursorVariant('link');
+        const mouseLeaveLink = () => setCursorVariant('default');
+        const mouseDown = () => setCursorVariant('clicking');
+        const mouseUp = () => setCursorVariant('default');
+
+        window.addEventListener('mousemove', mouseMove);
+        window.addEventListener('mousedown', mouseDown);
+        window.addEventListener('mouseup', mouseUp);
+        window.addEventListener('scroll', handleScroll);
+
+    // Add hover listeners to all links and buttons
+    const interactiveElements = document.querySelectorAll('a, button, .skill-card, .project-card, .hamburger');
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', mouseEnterLink);
+      el.addEventListener('mouseleave', mouseLeaveLink);
+    });
+
+        return () => {
+            window.removeEventListener('mousemove', mouseMove);
+            window.removeEventListener('mousedown', mouseDown);
+            window.removeEventListener('mouseup', mouseUp);
+            window.removeEventListener('scroll', handleScroll);
+            interactiveElements.forEach(el => {
+                el.removeEventListener('mouseenter', mouseEnterLink);
+                el.removeEventListener('mouseleave', mouseLeaveLink);
+            });
+        };
   }, []);
 
   const toggleMobileMenu = () => {
@@ -30,6 +65,22 @@ function App() {
 
   return (
     <div className="App">
+      {/* Custom Cursor */}
+      <div 
+        className={`cursor-dot ${cursorVariant}`}
+        style={{
+          left: `${cursorPos.x}px`,
+          top: `${cursorPos.y}px`
+        }}
+      ></div>
+      <div 
+        className={`cursor-outline ${cursorVariant}`}
+        style={{
+          left: `${cursorPos.x}px`,
+          top: `${cursorPos.y}px`
+        }}
+      ></div>
+
       {/* Navigation */}
       <header id="navbar" className={isScrolled ? 'scrolled' : ''}>
         <div className="container nav-container">
@@ -55,7 +106,7 @@ function App() {
         <section id="home" className="hero">
           <div className="container hero-container">
             <div className="hero-image-container" data-aos="fade-right">
-              <div className="yellow-circle"></div>
+              <div className="profile-circle"></div>
               <img 
                 src="/WhatsApp Image 2026-04-30 at 2.42.00 PM.jpeg" 
                 alt="Vishal - AI/ML Student" 

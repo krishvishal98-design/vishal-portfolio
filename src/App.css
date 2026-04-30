@@ -31,6 +31,12 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    cursor: none; /* Hide default cursor */
+}
+
+/* Hide cursor on all interactive elements */
+a, button, .btn, .hamburger, .skill-card, .project-card {
+    cursor: none !important;
 }
 
 /* Background grid pattern for a subtle tech vibe */
@@ -59,8 +65,8 @@ ul {
 }
 
 .container {
-    width: 90%;
-    max-width: 1200px;
+    width: 92%;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
@@ -146,6 +152,68 @@ ul {
 }
 
 /* =========================================
+   Custom Cursor Styles
+   ========================================= */
+.cursor-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+.cursor-outline {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--accent-color);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease-out;
+    background-color: transparent;
+}
+
+/* Cursor variants */
+.cursor-dot.link {
+    width: 12px;
+    height: 12px;
+    background-color: #fff;
+}
+
+.cursor-outline.link {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 215, 0, 0.1);
+    border-color: #fff;
+    border-width: 1px;
+}
+
+.cursor-dot.clicking {
+    transform: translate(-50%, -50%) scale(0.5);
+}
+
+.cursor-outline.clicking {
+    transform: translate(-50%, -50%) scale(0.8);
+    background-color: rgba(255, 215, 0, 0.2);
+}
+
+/* Hide custom cursor on mobile/touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .cursor-dot, .cursor-outline {
+        display: none;
+    }
+    body, a, button, .btn {
+        cursor: auto !important;
+    }
+}
+
+/* =========================================
    Navigation
    ========================================= */
 header {
@@ -226,14 +294,15 @@ header.scrolled {
     display: flex;
     align-items: center;
     padding-top: 100px;
-    background: radial-gradient(circle at 10% 20%, rgba(255, 215, 0, 0.05) 0%, transparent 40%);
+    background: radial-gradient(circle at 10% 20%, rgba(128, 128, 128, 0.05) 0%, transparent 40%);
 }
 
 .hero-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 6rem;
+    justify-content: space-between;
+    gap: 4rem;
+    width: 100%;
 }
 
 .hero-image-container {
@@ -244,14 +313,14 @@ header.scrolled {
     align-items: center;
 }
 
-.yellow-circle {
+.profile-circle {
     position: absolute;
-    width: 420px;
-    height: 420px;
+    width: 500px;
+    height: 500px;
     border-radius: 50%;
-    background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(128, 128, 128, 0.6) 0%, transparent 70%);
     z-index: 0;
-    box-shadow: 0 0 100px rgba(255, 215, 0, 0.2);
+    box-shadow: 0 0 120px rgba(128, 128, 128, 0.2);
     animation: pulse 4s infinite alternate;
     opacity: 0.4;
 }
@@ -264,19 +333,19 @@ header.scrolled {
 .hero-img {
     position: relative;
     z-index: 1;
-    width: 380px;
-    height: 380px;
+    width: 450px;
+    height: 450px;
     border-radius: 50%;
     object-fit: cover;
     object-position: center;
-    border: 8px solid var(--accent-color);
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.3);
+    border: 10px solid #808080;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(128, 128, 128, 0.3);
     transition: transform var(--transition-slow), box-shadow var(--transition-slow);
 }
 
 .hero-img:hover {
     transform: scale(1.03);
-    box-shadow: 0 15px 60px rgba(0, 0, 0, 0.6), 0 0 50px rgba(255, 215, 0, 0.5);
+    box-shadow: 0 15px 60px rgba(0, 0, 0, 0.6), 0 0 50px rgba(128, 128, 128, 0.5);
 }
 
 .hero-content {
@@ -294,11 +363,11 @@ header.scrolled {
 }
 
 .hero-title {
-    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
     font-weight: 900;
-    line-height: 1;
+    line-height: 0.9;
     margin-bottom: 1.5rem;
-    letter-spacing: -2px;
+    letter-spacing: -3px;
 }
 
 .hero-subtitle {
@@ -319,10 +388,10 @@ header.scrolled {
 }
 
 .hero-desc {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: var(--text-secondary);
     margin-bottom: 3rem;
-    max-width: 500px;
+    max-width: 600px;
     line-height: 1.8;
 }
 
@@ -360,8 +429,8 @@ header.scrolled {
    ========================================= */
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
 }
 
 .skill-card {
@@ -401,8 +470,8 @@ header.scrolled {
    ========================================= */
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
 }
 
 .project-card {
@@ -590,9 +659,13 @@ footer {
         justify-content: center;
     }
 
-    .yellow-circle {
+    .profile-circle {
         width: 250px;
         height: 250px;
+    }
+    
+    .skills-grid, .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
     
     .contact-container {
@@ -602,6 +675,9 @@ footer {
 }
 
 @media screen and (max-width: 768px) {
+    .skills-grid, .projects-grid, .why-me-grid {
+        grid-template-columns: 1fr;
+    }
     .nav-links {
         display: none; /* simple hidden menu for mobile initially */
     }
